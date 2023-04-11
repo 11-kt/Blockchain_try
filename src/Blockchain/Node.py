@@ -63,3 +63,22 @@ class Node:
         block.hash = block.get_hash()
         self.chain.append(block)
 
+    # Добавляем полученный блок в цепь
+    def add_block_from_json(self, json_block):
+        self.chain.append(json_block)
+
+    # Проверка валидности сгенерированного/полученного блока
+    def validate(self, new_block):
+        c = False
+        for i, n in enumerate(self.chain):
+            # Если блок с таким индексом уже есть в цепи, то проверяем какой блок был сгенерирован раньше
+            if n.index == new_block.index:
+                c = True
+                if n.timestamp > new_block.timestamp:
+                    print(f'Block #{new_block.index} from Node{new_block.num_node} replaced: {new_block}')
+                    self.chain[i] = new_block
+        # Если блока с таким индексом вообще нет в цепи, то добавляем его
+        if not c:
+            self.chain.append(new_block)
+            print(f'New block #{new_block.index} from Node{new_block.num_node}: {new_block}')
+
