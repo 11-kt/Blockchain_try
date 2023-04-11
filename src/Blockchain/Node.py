@@ -67,6 +67,18 @@ class Node:
     def add_block_from_json(self, json_block):
         self.chain.append(json_block)
 
+    # Конвертация json в блок
+    @staticmethod
+    def json_to_block(json_block):
+        block = Block(json_block['data'], json_block['From node'])
+        block.index = json_block['index']
+        block.nonce = json_block['nonce']
+        block.hash = json_block['hash']
+        block.prev_hash = json_block['prev_hash']
+        block.timestamp = json_block['timestamp']
+
+        return json_block['From node'], block
+
     # Проверка валидности сгенерированного/полученного блока
     def validate(self, new_block):
         c = False
@@ -82,3 +94,38 @@ class Node:
             self.chain.append(new_block)
             print(f'New block #{new_block.index} from Node{new_block.num_node}: {new_block}')
 
+    # Конвертация блока в json
+    @staticmethod
+    def block_to_json(block, from_node):
+        return json.dumps(
+            {
+                'From node': from_node,
+                'data': block.data,
+                'index': block.index,
+                'nonce': block.nonce,
+                'hash': block.hash,
+                'prev_hash': block.prev_hash,
+                'timestamp': block.timestamp
+            },
+            indent=4)
+
+    def chain_to_json(self):
+        return json.dumps([{
+            'Block': {
+                'From node': item.num_node,
+                'data': item.data,
+                'index': item.index,
+                'nonce': item.nonce,
+                'hash': item.hash,
+                'prev_hash': item.prev_hash,
+                'timestamp': item.timestamp
+            }}
+            for item in self.chain], indent=4)
+
+    def json_chain_to_blockchain(self, json_chain):
+        j = json.loads(json_chain)
+        new_blockchain = []
+        for e in j:
+            _, block = self.json_to_block(e['Block'])
+            new_blockchain.append(block)
+        return new_blockchain
