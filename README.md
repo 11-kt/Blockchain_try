@@ -1,13 +1,19 @@
 # Blockchain
 
 ## Тесты
+NodeTest + MockTest:
 
-Ветка `main`: [![NodeTest + MockTest](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml)
 
-Ветка `develop`: [![NodeTest + MockTest](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml)
+* Ветка `main`: [![NodeTest + MockTest](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml)
+
+
+* Ветка `develop`: [![NodeTest + MockTest](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/11-kt/Blockchain_try/actions/workflows/test.yml)
+
 
 *   Покрытие
+
 ![NodeTest](./screens/coverage.png)
+
 
 #### Requirements: `requirements.txt`
 
@@ -29,7 +35,7 @@
 ## Результаты
 Node1 (port: `11110`) генерирует genesis и отправляет на Node2 (port: `11111`) и Node3 (port: `11112`). Далее начинается генерация блоков и обмен.
 
-Ниже представлено состояние цепи для каждого блока (видно, что блоки приходят от разных нод).
+Ниже представлено состояние цепи для каждого нода.
 
 * Node1:
 ![Node1](./screens/node1.png)
