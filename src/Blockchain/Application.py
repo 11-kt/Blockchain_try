@@ -3,8 +3,8 @@ import concurrent.futures
 import logging
 import grequests as grequests
 from flask import Flask, request, jsonify
-from Blockchain.utils import config
-from Blockchain.Node import Node
+import utils
+from Node import Node
 
 
 def exception_handler(request, exception):
@@ -87,10 +87,10 @@ def start_work(t, nonce_type):
             # Передаем запрошенное состояние цепи
             return jsonify(n.chain_to_json())
 
-    p, urls = config(t)
+    p, urls = utils.config(t)
 
     n = Node(nonce_type)
 
     with concurrent.futures.ThreadPoolExecutor(2) as executor:
         executor.submit(mining_process, t, n, urls)
-        executor.submit(serv.run, 'localhost', p)
+        executor.submit(serv.run, '0.0.0.0', p)
