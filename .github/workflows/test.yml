@@ -1,0 +1,43 @@
+name: Tests_pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+  workflow_dispatch:
+
+jobs:
+  tests:
+
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: py 3.11 installation
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: dep installation
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: start tests
+        working-directory: src
+        run: |
+          python -m unittest test.NodeTest.NodeTest test.MockTest.MockTest
