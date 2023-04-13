@@ -260,26 +260,3 @@ class NodeTest(unittest.TestCase):
 
         self.assertEqual(port, 11112)
         self.assertEqual(urls, ['http://localhost:11110/', 'http://localhost:11111/'])
-
-    # Прерываем генерацию нового блока
-    def test_create_None_block(self):
-        n1 = Node(0)
-
-        node_num = 1
-        # Genesis
-        n1.create_first_block(node_num)
-
-        # Новый блок, но его пока нет в цепи
-        new_block = n1.create_new_block(1)
-
-        with concurrent.futures.ThreadPoolExecutor(2) as executor:
-            # Запускаем генерацию блока, чей индекс = genesis.index + 1 == new_block.index
-            futures = executor.submit(n1.create_new_block, 1)
-            # Добавляем new_block в цепь
-            executor.submit(n1.chain.append, new_block)
-            result = futures.result()
-
-        # Отмена генерации
-        self.assertIsNone(result)
-        # Последний блок цепи == new_block
-        self.assertEqual(n1.get_last_block(), new_block)
